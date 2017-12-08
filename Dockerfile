@@ -5,12 +5,14 @@ EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["python3", "/app/main.py"]
 
-RUN apk add --no-cache python3 curl git gzip
+RUN apk add --no-cache python3 curl gzip
 RUN python3 -m ensurepip --upgrade
+
+COPY requirements.txt /
 
 RUN apk add --no-cache --virtual .build-dependencies gcc gfortran python3-dev build-base wget freetype-dev libpng-dev openblas-dev
 
-RUN python3 -m pip install numpy scipy gensim sanic
+RUN python3 -m pip install -r requirements.txt
 
 RUN apk del .build-dependencies
 
