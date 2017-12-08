@@ -4,7 +4,19 @@ services:
   - docker
 
 before_install:
-  - docker build .
+  - docker build -t word2vec-service .
+
+after_success:
+  - if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
+    docker --version
+    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    docker tag $REPO:$TAG $REPO:$TRAVIS_BUILD_NUMBER;
+    docker push $REPO:$TRAVIS_BUILD_NUMBER;
+    fi 
 
 script:
+  - export TAG=`if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then echo "latest"; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi`
+  - export REPO=vampolo/word2vec-service
+  - docker build -t $REPO:$TAG -f Dockerfile .
   - exit 0
+
