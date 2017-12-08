@@ -5,12 +5,12 @@ EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["python3", "/app/main.py"]
 
-RUN apk add --no-cache python3 curl gzip openblas libstdc++
+RUN apk add --no-cache python3 wget gzip openblas libstdc++
 RUN python3 -m ensurepip --upgrade
 
 COPY requirements.txt /
 
-RUN apk add --no-cache --virtual .build-dependencies gcc gfortran python3-dev build-base wget freetype-dev libpng-dev openblas-dev
+RUN apk add --no-cache --virtual .build-dependencies gcc gfortran python3-dev build-base freetype-dev libpng-dev openblas-dev
 
 RUN python3 -m pip install -r requirements.txt
 

@@ -8,10 +8,7 @@ before_install:
 
 script:
   - docker build -t server -f Dockerfile .
-  - exit 0
-
-after_success:
-  - echo "after_success"
+  - echo "Publishing"
   - |
     if [ "$TRAVIS_BRANCH" == "master" ]; then
     REPO=vampolo/word2vec-service;
