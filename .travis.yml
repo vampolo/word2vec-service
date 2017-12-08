@@ -11,11 +11,13 @@ script:
   - exit 0
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+  - echo "after_success"
+  - |
+    if [ "$TRAVIS_BRANCH" == "master" ]; then
     REPO=vampolo/word2vec-service;
-    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker tag server "$REPO:$TRAVIS_BUILD_NUMBER";
-    docker tag server "$REPO:latest";
-    docker push "$REPO:$TRAVIS_BUILD_NUMBER";
-    docker push "$REPO:latest";
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+    docker tag server "$REPO:$TRAVIS_BUILD_NUMBER"
+    docker tag server "$REPO:latest"
+    docker push "$REPO:$TRAVIS_BUILD_NUMBER"
+    docker push "$REPO:latest"
     fi
