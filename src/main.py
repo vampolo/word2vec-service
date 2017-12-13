@@ -30,7 +30,6 @@ async def word2vec(request):
 
 @app.route('/words2vec', methods=['POST'])
 async def words2vec(request):
-    print(request.json)
     if 'words' not in request.json:
         return response.json({
             'message': 'Please provide array of words as body'
