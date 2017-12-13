@@ -25,8 +25,23 @@ async def word2vec(request):
 
     return response.json(
         {'message': '404 Not Found'},
-        status=200
+        status=404
     )
+
+@app.route('/words2vec', methods=['POST'])
+async def words2vec(request):
+    print(request.json)
+    if 'words' not in request.json:
+        return response.json({
+            'message': 'Please provide array of words as body'
+        }, status=422)
+
+    words = request.json['words']
+
+    res = {x: model[x] if x in model else None for x in words}
+
+    return json(res)
+
 
 
 if __name__ == "__main__":
