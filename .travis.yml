@@ -4,8 +4,8 @@ services:
   - docker
 
 before_install:
-  - docker pull word2vec-service:latest
-  - docker build -t word2vec-service --cache-from word2vec-service:latest .
+  - docker pull vampolo/word2vec-service:latest
+  - docker build -t word2vec-service --cache-from vampolo/word2vec-service:latest .
 
 script:
   - echo "Publishing"
