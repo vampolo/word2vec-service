@@ -4,17 +4,17 @@ services:
   - docker
 
 before_install:
-  - docker build -t word2vec-service .
+  - docker pull word2vec-service:latest
+  - docker build -t word2vec-service --cache-from word2vec-service:latest .
 
 script:
-  - docker build -t server -f Dockerfile .
   - echo "Publishing"
   - |
     if [ "$TRAVIS_BRANCH" == "master" ]; then
     REPO=vampolo/word2vec-service;
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-    docker tag server "$REPO:$TRAVIS_BUILD_NUMBER"
-    docker tag server "$REPO:latest"
+    docker tag word2vec-service "$REPO:$TRAVIS_BUILD_NUMBER"
+    docker tag word2vec-service "$REPO:latest"
     docker push "$REPO:$TRAVIS_BUILD_NUMBER"
     docker push "$REPO:latest"
     fi
