@@ -2,19 +2,17 @@ FROM alpine
 LABEL maintainer="vincenzo.ampolo@gmail.com"
 
 EXPOSE 8000
-ENTRYPOINT ["/entrypoint.sh"]
 CMD ["python3", "/app/main.py"]
-
-RUN apk add --no-cache python3 wget gzip openblas libstdc++
-RUN python3 -m ensurepip --upgrade
+ENV VECTOR_FILE=https://s3.amazonaws.com/dl4j-distribution/GoogleNews-vectors-negative300.bin.gz \
+    BINARY_VECTOR_FILE=true
 
 COPY requirements.txt /
 
-RUN apk add --no-cache --virtual .build-dependencies gcc gfortran python3-dev build-base freetype-dev libpng-dev openblas-dev
+RUN set -x \
+    && apk add --no-cache python3 openblas libstdc++ \
+    && python3 -m ensurepip --upgrade \
+    && apk add --no-cache --virtual .build-dependencies gcc gfortran python3-dev build-base freetype-dev libpng-dev openblas-dev \
+    && python3 -m pip install -r requirements.txt \
+    && apk del .build-dependencies
 
-RUN python3 -m pip install -r requirements.txt
-
-RUN apk del .build-dependencies
-
-COPY entrypoint.sh /
 COPY src /app

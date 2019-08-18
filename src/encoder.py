@@ -1,6 +1,7 @@
 from sanic.response import json as sanic_json
 import numpy
 
+
 def is_iterable(x):
     try:
         iter(x)
