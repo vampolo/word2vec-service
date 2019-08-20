@@ -5,4 +5,3 @@ services:
       context: .
       dockerfile: ./Dockerfile
     image: vampolo/word2vec-service
-

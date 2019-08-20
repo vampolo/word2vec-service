@@ -1,6 +1,4 @@
-from sanic import Sanic
-from sanic.exceptions import abort
-from sanic import response
+from sanic import Sanic, response
 from encoder import json
 
 from word2vec import model
@@ -33,11 +31,11 @@ async def words2vec(request):
     if 'words' not in request.json:
         return response.json({
             'message': 'Please provide array of words as body'
-        }, status=422)
+        }, status=400)
 
     words = request.json['words']
 
-    res = {x: model[x] if x in model else None for x in words}
+    res = ((x, model[x]) if x in model else None for x in words)
 
     return json(res)
 
